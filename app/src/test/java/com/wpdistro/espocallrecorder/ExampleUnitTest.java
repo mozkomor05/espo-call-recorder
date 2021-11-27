@@ -1,4 +1,4 @@
-package com.wpdistro.callrecorder;
+package com.wpdistro.espocallrecorder;
 
 import org.junit.Test;
 

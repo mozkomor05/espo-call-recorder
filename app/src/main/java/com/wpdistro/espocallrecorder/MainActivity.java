@@ -1,4 +1,4 @@
-package com.wpdistro.callrecorder;
+package com.wpdistro.espocallrecorder;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -20,8 +20,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 

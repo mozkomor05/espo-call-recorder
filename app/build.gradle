@@ -6,7 +6,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.wpdistro.callrecorder"
+        applicationId "com.wpdistro.espocallrecorder"
         minSdk 23
         targetSdk 31
         versionCode 1
@@ -19,6 +19,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable true
         }
     }
     compileOptions {

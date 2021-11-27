@@ -1,4 +1,4 @@
-package com.wpdistro.callrecorder;
+package com.wpdistro.espocallrecorder;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.wpdistro.callrecorder", appContext.getPackageName());
+        assertEquals("com.wpdistro.espocallrecorder", appContext.getPackageName());
     }
 }

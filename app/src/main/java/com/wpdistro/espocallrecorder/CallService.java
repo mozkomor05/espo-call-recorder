@@ -1,4 +1,4 @@
-package com.wpdistro.callrecorder;
+package com.wpdistro.espocallrecorder;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -6,14 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
-import android.os.Binder;
 import android.os.IBinder;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -66,30 +62,38 @@ public class CallService extends Service {
         }
 
         String number = null;
-
         Uri allCalls = Uri.parse("content://call_log/calls");
         Cursor c = getContentResolver().query(allCalls, null, null, null, CallLog.Calls.DATE + " DESC");
-        if (c.moveToFirst()) {
-            number = c.getString(c.getColumnIndexOrThrow(CallLog.Calls.NUMBER));
-        }
-        c.close();
 
-        if (number == null)
-            return;
-
-        espoAPI.checkPhoneNumber(ctx, number, response -> {
-            try {
-                String id = response.getJSONArray("list").getJSONObject(0).getString("id");
-                Log.d("callRecordService", id);
-                espoAPI.uploadCall(id, isIncoming, dateStart, dateEnd);
-            } catch (JSONException e) {
-                e.printStackTrace();
+        try {
+            if (c.moveToFirst()) {
+                number = c.getString(c.getColumnIndexOrThrow(CallLog.Calls.NUMBER));
             }
 
+            if (number == null) {
+                c.close();
+                audioFile.delete();
+                return;
+            }
+
+            espoAPI.checkPhoneNumber(ctx, number, response -> {
+                try {
+                    JSONObject obj = response.getJSONArray("list").getJSONObject(0);
+                    long duration = c.getLong(c.getColumnIndexOrThrow(CallLog.Calls.DURATION));
+                    long dateStart = c.getLong(c.getColumnIndexOrThrow(CallLog.Calls.DATE));
+
+                    espoAPI.uploadCall(ctx, obj, isIncoming, duration, dateStart, audioFile);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }, error -> {
+                c.close();
+                audioFile.delete();
+            });
+        } catch (Exception e) {
+            c.close();
             audioFile.delete();
-        }, error -> {
-            audioFile.delete();
-        });
+        }
     }
 
     public abstract class PhoneCallReceiver extends BroadcastReceiver {

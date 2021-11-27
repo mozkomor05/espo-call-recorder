@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.wpdistro.callrecorder">
+    package="com.wpdistro.espocallrecorder">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CallRecorder">
         <activity
-            android:name=".ConfigurationActivity"
+            android:name="com.wpdistro.espocallrecorder.ConfigurationActivity"
             android:exported="false"
             android:label="@string/title_activity_configuration"
             android:theme="@style/Theme.CallRecorder.NoActionBar" />
 
         <service
-            android:name=".RecordingAccessibilityService"
+            android:name="com.wpdistro.espocallrecorder.RecordingAccessibilityService"
             android:exported="false"
             android:label="Call record service"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -39,11 +35,11 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
         <service
-            android:name=".CallService"
+            android:name="com.wpdistro.espocallrecorder.CallService"
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.wpdistro.espocallrecorder.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

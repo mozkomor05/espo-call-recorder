@@ -1,18 +1,12 @@
-package com.wpdistro.callrecorder;
+package com.wpdistro.espocallrecorder;
 
 import android.accessibilityservice.AccessibilityService;
-import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Environment;
-import android.os.IBinder;
-import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,7 +94,7 @@ public class RecordingAccessibilityService extends AccessibilityService {
 
     private boolean prepareAudioRecorder(Context ctx) {
         try {
-            File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/recordings");
+            File dir = new File(ctx.getFilesDir(), "recordings");
 
             if (!dir.exists()) {
                 dir.mkdirs();

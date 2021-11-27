@@ -1,4 +1,4 @@
-package com.wpdistro.callrecorder;
+package com.wpdistro.espocallrecorder;
 
 import android.app.AlertDialog;
 import android.content.Context;
