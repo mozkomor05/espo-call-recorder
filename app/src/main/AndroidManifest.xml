@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.wpdistro.espocallrecorder">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -21,22 +20,26 @@
             android:label="@string/title_activity_configuration"
             android:theme="@style/Theme.CallRecorder.NoActionBar" />
 
+        <receiver
+            android:name=".EspoCallReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
         <service
-            android:name="com.wpdistro.espocallrecorder.RecordingAccessibilityService"
-            android:exported="false"
-            android:label="Call record service"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            android:name=".RecordingAccessibilityService"
+            android:label="@string/accessibility_service_description"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility_service_config" />
         </service>
-        <service
-            android:name="com.wpdistro.espocallrecorder.CallService"
-            android:exported="false" />
 
         <activity
             android:name="com.wpdistro.espocallrecorder.MainActivity"

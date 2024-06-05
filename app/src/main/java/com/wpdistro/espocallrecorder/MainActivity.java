@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return false;
-
     }
 
     @Override
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (permissionsToAskFor.size() > 0) {
+        if (!permissionsToAskFor.isEmpty()) {
             ActivityCompat.requestPermissions(MainActivity.this, permissionsToAskFor.toArray(new String[0]), 1);
         }
 
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startRecorderService() {
-        startService(new Intent(this, CallService.class));
         setContentView(R.layout.activity_main);
     }
 

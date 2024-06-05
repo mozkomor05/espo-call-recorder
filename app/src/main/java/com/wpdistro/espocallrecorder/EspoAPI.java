@@ -24,26 +24,25 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 public final class EspoAPI {
     private static final String apiPath = "api/v1";
-
-    protected Uri url;
-    protected String username;
-    protected String token;
-    protected String userId = null;
+    private final Uri url;
+    private final String username;
+    private final String token;
+    private String userId = null;
 
     public EspoAPI(Uri url, String username, String token) {
         this.url = Uri.withAppendedPath(url, apiPath);
@@ -125,30 +124,30 @@ public final class EspoAPI {
         }, errorListener);
     }
 
-    public void uploadCall(Context ctx, JSONObject obj, boolean isIncoming, long duration, long dateStart, File audioFile) {
+    public void uploadCall(Context ctx, JSONObject obj, File audioFile, boolean isIncoming, long duration, long dateStart) {
         if (TextUtils.isEmpty(userId)) {
             fetchUserId(ctx, userId -> {
                 this.userId = userId;
-                handleCallUpload(ctx, obj, isIncoming, duration, dateStart, userId, audioFile);
+                handleCallUpload(ctx, obj, audioFile, isIncoming, duration, dateStart, userId);
             });
         } else {
-            handleCallUpload(ctx, obj, isIncoming, duration, dateStart, userId, audioFile);
+            handleCallUpload(ctx, obj, audioFile, isIncoming, duration, dateStart, userId);
         }
     }
 
-    private void handleCallUpload(Context ctx, JSONObject obj, boolean isIncoming, long duration, long dateStart, String userId, File audioFile) {
+    private void handleCallUpload(Context ctx, JSONObject obj, File audioFile, boolean isIncoming, long duration, long dateStart, String userId) {
         try {
-            uploadCall(ctx, obj, isIncoming, duration, dateStart, userId, audioFile);
+            uploadCall(ctx, obj, audioFile, isIncoming, duration, dateStart, userId);
         } catch (JSONException | Exceptions.NullFileBytesException e) {
             audioFile.delete();
             e.printStackTrace();
         }
     }
 
-    private void uploadCall(Context ctx, JSONObject obj, boolean isIncoming, long duration, long dateStart, String userId, File audioFile)
+    private void uploadCall(Context ctx, JSONObject obj, File audioFile, boolean isIncoming, long duration, long dateStart, String userId)
             throws JSONException, Exceptions.NullFileBytesException {
         String id = obj.getString("id");
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
         JSONObject callData = new JSONObject();
         callData.put("name", obj.getString("name"));
@@ -169,13 +168,10 @@ public final class EspoAPI {
             }
         }
 
-        TimeZone tz = TimeZone.getDefault();
-        dateStart += tz.getRawOffset() + (tz.useDaylightTime() ? tz.getDSTSavings() : 0);
-
         callData.put("direction", isIncoming ? "Inbound" : "Outbound");
         callData.put("status", "Held");
-        callData.put("dateStart", formatter.format(dateStart));
-        callData.put("dateEnd", formatter.format(dateStart + duration * 1000));
+        callData.put("dateStart", formatter.format(new Date(dateStart)));
+        callData.put("dateEnd", formatter.format(new Date(dateStart + duration * 1000)));
 
         JSONObject attData = new JSONObject();
         int audioFileLength = (int) audioFile.length();
@@ -184,7 +180,7 @@ public final class EspoAPI {
 
         try {
             byte[] bytes = new byte[audioFileLength];
-            BufferedInputStream buffer = new BufferedInputStream(new FileInputStream(audioFile));
+            BufferedInputStream buffer = new BufferedInputStream(Files.newInputStream(audioFile.toPath()));
             buffer.read(bytes, 0, bytes.length);
             buffer.close();
 
@@ -240,12 +236,12 @@ public final class EspoAPI {
         }, null);
     }
 
-    protected void espoRequest(Context ctx, String path, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
+    private void espoRequest(Context ctx, String path, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
         espoRequest(ctx, Request.Method.GET, path, new JSONObject(), listener, errorListener);
     }
 
-    protected void espoRequest(Context ctx, int method, String path, JSONObject data,
-                               Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
+    private void espoRequest(Context ctx, int method, String path, JSONObject data,
+                             Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(ctx);
 
         JsonObjectRequest request = new JsonObjectRequest(method, Uri.withAppendedPath(url, path).toString(), data, listener, errorListener) {

@@ -1,3 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Espo: Nahrávání hovorů</string>
+    <string name="service_is_running">Servis běží v pořádku. Můžete zavřít tuto aplikaci.</string>
+    <string name="accessibility_service_description">Povolí nahrávání hovorů</string>
+    <string name="enable_service_dialog_title">Prosím povote službu usnadnění v nastavení</string>
+    <string name="enable_service_dialog_desc">Musíte povolit službu usnadnění, aby aplikace mohla nahrávat hovory. Po kliknutí na OK vyskočí nastavení usnadnění.</string>
+    <string name="title_activity_configuration">Konfigurace</string>
+    <string name="first_fragment_label">První fragment</string>
+    <string name="second_fragment_label">Druhý fragment</string>
+    <string name="next">Další</string>
+    <string name="previous">Předchozí</string>
+    <string name="api_token_unknown_error">Nastala neznámá chyba. Zkontrolujte URL adresu a zda běží server.</string>
+    <string name="autocrm_url">AutoCRM URL</string>
+    <string name="username">Uživatelské jméno</string>
+    <string name="password">Heslo</string>
+    <string name="authorize">Autorizovat</string>
+    <string name="authentication_error_title">Chyba autentizace</string>
+    <string name="authentication_error_message">Zkontrolujte uživatelské jméno a heslo.</string>
+    <string name="requesting_token">Získávání tokenu...</string>
+    <string name="token_missing_title">Chybějící token</string>
+    <string name="token_missing_message">Token nebyl nalezel v odpovědi API. Prosím zkontrolujte URL.</string>
+    <string name="toast_call_being_recorded">Hovor je automaticky nahrávám. Všechny soukromé hovory se automaticky smažou!</string>
+    <string name="toast_call_being_uploaded">Účastníci hovoru byli identifikování a hovor se nahraje na CRM.</string>
 </resources>

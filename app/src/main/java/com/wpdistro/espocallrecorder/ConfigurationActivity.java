@@ -73,7 +73,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         }
 
         try {
-            CustomProgressDialog.show(this, "Requesting token...");
+            CustomProgressDialog.show(this, getString(R.string.requesting_token));
             String finalUrlString = urlString; // lambda
 
             EspoAPI.fetchToken(this, Uri.parse(finalUrlString), usernameString, passwordString, token -> {
@@ -90,15 +90,15 @@ public class ConfigurationActivity extends AppCompatActivity {
                 CustomProgressDialog.close();
                 if (errorResponse.getClass() == AuthFailureError.class) {
                     new AlertDialog.Builder(this)
-                            .setTitle("Authentication error")
-                            .setMessage("Check your username and password.")
+                            .setTitle(R.string.authentication_error_title)
+                            .setMessage(R.string.authentication_error_message)
                             .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                             })
                             .show();
                 } else if (errorResponse.getClass() == EspoAPI.Exceptions.TokenMissingException.class) {
                     new AlertDialog.Builder(this)
-                            .setTitle("Token missing")
-                            .setMessage("Token not found in the API response. Check your URL.")
+                            .setTitle(R.string.token_missing_title)
+                            .setMessage(R.string.token_missing_message)
                             .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                             })
                             .show();
@@ -112,7 +112,7 @@ public class ConfigurationActivity extends AppCompatActivity {
                 }
             });
         } catch (InterruptedException | ExecutionException |
-                TimeoutException e) {
+                 TimeoutException e) {
             e.printStackTrace();
             new AlertDialog.Builder(this)
                     .setTitle("Error occurred")

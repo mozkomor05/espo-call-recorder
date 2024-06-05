@@ -1,3 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Espo: Nahrávání hovorů</string>
+    <string name="service_is_running">Service is up and running. You may close this app.</string>
+    <string name="accessibility_service_description">Allows call recording</string>
+    <string name="enable_service_dialog_title">Please enable accessibility service in settings</string>
+    <string name="enable_service_dialog_desc">You must enable this app\'s accessibility service in order for it to record calls. After clicking OK the acessibility settings will pop up.</string>
+    <string name="title_activity_configuration">Configuration</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="api_token_unknown_error">Unknown error occurred. Check your URL. Is the server alive?</string>
+    <string name="autocrm_url">AutoCRM URL</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="authorize">Authorize</string>
+    <string name="authentication_error_title">Authentication Error</string>
+    <string name="authentication_error_message">Check your username and password.</string>
+    <string name="requesting_token">Requesting token...</string>
+    <string name="token_missing_title">Missing Token</string>
+    <string name="token_missing_message">Token not found in the API response. Check your URL.</string>
+    <string name="toast_call_being_recorded">Call is automatically being recorded. All private call recordings will be deleted!</string>
+    <string name="toast_call_being_uploaded">Call participants identified. Call will be uploaded to CRM.</string>
 </resources>
